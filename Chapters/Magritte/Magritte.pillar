@@ -1,4 +1,4 @@
-!! Magritte: Meta-data at Work
+!! Magritte in a nutshell
 
 Many applications consist of a large number of input dialogs and reports that need to be built, displayed and validated manually. Often these dialogs remain static after the development phase and cannot be changed unless a new development effort occurs. For certain kinds of application domains such as small businesses, changing business plans, modifying workflows, etc., it usually boils down to minor modifications to domain objects and behavior, for example new fields have to be added, configured differently, rearranged or removed. Performing such tasks is tedious.
 
@@ -6,20 +6,20 @@ Magritte is a meta-data description framework. With Magritte you describe your d
 
 In this chapter we describe Magritte, its design and how to customize it. Now be warned, Magritte is a framework supporting meta-data description. As any framework, mastering it takes time. It is not a scaffolding engine, therefore Magritte may imply some extra complexity and you have to understand when you want to pay for such complexity.
 
-!!! Basic Principles
+!!! Basic principles
 
-In this section we present the key principles. With such knowledge you can get 80\% of the power of Magritte without knowing all its possible customizations. The key idea behind Magritte is the following: given one object with a set of values, and a description of this information, we will create automatically tools that treat such information and for example automatically create Seaside components. 
+In this section we present the key principles. With such a knowledge you can get 80\% of the power of Magritte without knowing all its possible customizations. The key idea behind Magritte is the following: given one object with a set of values, and a description of this information, we will create automatically tools that treat such information and for example automatically create Seaside components. 
 
-Figure *@basicPrinciple* shows that a person address', John's address, instance of the class Address, is described by a description object which is attached to the class Address. A program (i.e., database query, generic UI, seaside component builder) will interpret the value of the instance by using its descriptions.
+Figure *@basicPrinciple* shows that a person address', John's address, instance of the class Address, is described by a description object which is attached to the class ==Address==. A program (i.e., database query, generic UI, seaside component builder) will interpret the value of the instance by using its descriptions.
 
 +An object is described by a description which is defined on its class.>file://figures/basicPrinciple.png|width=60%|label=basicPrinciple+
 
 Here are the basic description assumptions:
 
-- An object is described by adding methods named ==description== (naming convention) to its class. Such description methods create different description entities. The following ==MAAddress== class method creates a string description object that has a label 'Street', a priority and two accessors street and street: to access it.
+- An object is described by adding methods named ==description== (naming convention) to its class. Such description methods create different description entities. The following ==MAAddress== class method creates a string description object that has a label =='Street'==, a priority and two accessors ==street== and ==street:== to access it.
 
 [[[
-MAAddress>>descriptionStreet
+MAAddress >> descriptionStreet
 	<magritteDescription>
 	^ MAStringDescription new
 		accessor: #street;
@@ -30,16 +30,23 @@ MAAddress>>descriptionStreet
 
 Note that there is no need to have a one to one mapping between the instance variables of the class and the associated descriptions.
 
-- All descriptions are automatically collected and put into a container description when sending ==magritteDescription== to  the object (see Figure *describingAddress*).
+- All descriptions are automatically collected and put into a container description when sending ==magritteDescription== to  the object (see Figure *@describingAddress*).
 - Descriptions are defined programmatically and can also be queried. They support the collection protocol (==do:==,  ==select:==...).
 
 +Describing an Address.>file://figures/describingAddress.png|width=90%|label=describingAddress+
 
-""Obtaining a component."" Once an object is described, you can obtain a Seaside component by sending to the object the message ==Object>>asComponent==. For example to get a component for an address: ==anAddress asComponent==.
+Now once we have described an instance, Magritte can build for us different representations. An interesting one in the context of web development is the automatic creation of Seaside components. 
 
-It is often useful to decorate the component with buttons like cancel and Ok. This can be done by sending the message ==WAComponent>>addValidatedForm== to the component. Note that you can also change the label of the validating form using ==addValidatedForm:== and passing an array of associations whose first element is the message to be sent and the second the label to be displayed.
 
-A Magritte form is generally wrapped with a form decoration via  ==WAComponent>>addValidatedForm==. Magritte forms don't directly work on your domain objects. They work on a memento of the values pulled from your object using the descriptions. When you call ==save==, the values are validated using the descriptions, and only after passing all validation rules are the values committed to your domain object by the mementos via the accessors.
+!!! Obtaining a component
+
+Once an object is described, you can obtain a Seaside component by sending to the object the message ==Object >> asComponent==. For example to get a component for an address: ==anAddress asComponent== as shown in Figure *@figaddressOur*.
+
++anAddress asComponent produces a Seaside component.>file://figures/address.png|width=60%|label=figaddressOur+ 
+
+It is often useful to decorate the component with buttons like cancel and Ok. This can be done by sending the message ==WAComponent >> addValidatedForm== to the component. Note that you can also change the label of the validating form using ==addValidatedForm:== and passing an array of associations whose first element is the message to be sent and the second the label to be displayed.
+
+
 
 [[[
 anAddress asComponent addValidatedForm.
@@ -49,20 +56,50 @@ anAddress asComponent addValidatedForm.
 anAddress asComponent addValidatedForm: { #save -> 'Save'. #cancel -> 'Cancel' }.
 ]]]
 
+A Magritte form is generally wrapped with a form decoration via  ==WAComponent >> addValidatedForm.==. Magritte forms don't directly work on your domain objects. They work on a memento of the values pulled from your object using the descriptions. When you call ==save==, the values are validated using the descriptions, and only after passing all validation rules are the values committed to your domain object by the mementos via the accessors.
+
 A description container is an object implementing collection behavior (==collect:==, ==select:==, ==do:==, ==allSatisfy:==, ...). Therefore you can send the normal collection messages to extract the parts of the descriptions you want. You can also iterate over the description or concatenate new ones. Have a look at the ==MAContainer== protocol.
 
-You can also use the message ==MAContainer>>asComponentOn:== with aModel to build or select part of a description and get a component on a given model. The following code schematically shows the idea: two descriptions are assembled and a component based on these two descriptions is built.
+You can also use the message ==MAContainer >> asComponentOn:== with aModel to build or select part of a description and get a component on a given model. The following code schematically shows the idea: two descriptions are assembled and a component based on these two descriptions is built.
 
 [[[
-((Address descriptionStreet , Address descriptionPlace) 
+((anAddress descriptionStreet , anAddress descriptionPlace) 
 	asComponentOn: anAddress) addValidatedForm 
 ]]]
 
-!!! First Example
+!!! Summary 
 
-Let us go over a simple but complete example. We want to develop an application to manage person, address and phone number as shown in Figure *addressOur*.
+While Magritte is really powerful, using a meta-data system will add another indirection layer to your application, so this is important to understand how to use such power and when to just use normal development techniques. A good and small example to learn from is the Conrad conference management system developed to manage the ESUG conference available at *http://www.squeaksource.com/Conrad.html*. 
+
+Here Magritte is used to describe the different forms and all the data. The Pier content management system is a more complex example of using Magritte, it can be downloaded at *http://www.piercms.com*.
+
+
+
+!! First concrete example
+
+Let us go over a simple but complete example. We want to develop an application to manage person, address and phone number as shown in Figure *@addressOur*.
 
 +Our address design.>file://figures/address.png|width=60%|label=addressOur+ 
+
+
+!!! Getting started 
+
+Get a Seaside image from *http://www.seaside.st*. Normally Seaside is shipped with Magritte. 
+
+[[[
+MCSmalltalkhubRepository
+	owner: 'Magritte'
+	project: 'Magritte3'
+	user: ''
+	password: ''
+]]]
+
+Make sure your Seaside server is running within the image by browsing the counter application at *http://localhost:8080/examples/counter*
+
+If it is not, use the Seaside control panel from Tools menu of the world menu to check the status of the web server. 
+
+
+!!! Defining the address class
 
 We define a class ==MAAddress== with four instance variables and their corresponding accessors. 
 
@@ -70,11 +107,12 @@ We define a class ==MAAddress== with four instance variables and their correspon
 Object subclass: #Address
 	instanceVariableNames: 'street place plz canton'
 	classVariableNames: ''
-	category: 'MaAddress'
+	category: 'MAAddress'
 ]]]
 
 [[[
-MAAddress class>>example1
+MAAddress class >> example1
+	
 	| address | 
 	address := self new.
 	address plz: 1001.
@@ -87,7 +125,7 @@ MAAddress class>>example1
 Then we add the descriptions to the ==MAAddress== class as follows: the street name and the place are described by a string description, the PLZ is a number with a range between 1000 and 9999, and since the canton is one of the predefined canton list (our address is for Switzerland so far), we describe it as a single option description.
 
 [[[
-MAAddress>>descriptionStreet
+MAAddress >> descriptionStreet
 		<magritteDescription>
 		
 		^ MAStringDescription new
@@ -98,7 +136,7 @@ MAAddress>>descriptionStreet
 ]]]
 
 [[[
-MAAddress>>descriptionPlz
+MAAddress >> descriptionPlz
 		<magritteDescription>
 		
 		^ MANumberDescription new
@@ -111,7 +149,7 @@ MAAddress>>descriptionPlz
 ]]]
 
 [[[
-MAAddress>>descriptionPlace
+MAAddress >> descriptionPlace
 		<magritteDescription>
 	
 		^ MAStringDescription new
@@ -122,7 +160,7 @@ MAAddress>>descriptionPlace
 ]]]
 
 [[[
-MAAddress>>descriptionCanton
+MAAddress >> descriptionCanton
 		<magritteDescription>
 	
 		^ MASingleOptionDescription new
@@ -134,6 +172,10 @@ MAAddress>>descriptionCanton
 			beSorted;
 			yourself
 ]]]
+
+
+!!! First magritte program
+
 Now we can start manipulating the descriptions. Inspect the description object of the address object:
 
 [[[
@@ -142,7 +184,7 @@ address := Address example1.
 address magritteDescription inspect.
 ]]]
 
-Now we can iterate over the descriptions and get the values associated with the descriptions of our address model:
+We can iterate over the descriptions and get the values associated with the descriptions of our address model:
 
 [[[
 | address |
@@ -153,6 +195,8 @@ address magritteDescription do: [ :description |
 		show: (description toString: (address readUsing: description));
 		cr ]
 ]]]
+
+
 Executing the second code snippet outputs the following in the Transcript:
 
 [[[
@@ -162,49 +206,63 @@ Place:     DreamTown
 Canton:    Bern
 ]]]
 
-""Creating a Seaside Editor."" Now we are ready to create a Seaside component automatically in a similar manner. 
+!!! Creating a Seaside editor.
+
+ Now we are ready to create a Seaside component automatically in a similar manner. 
 
 [[[
 WAComponent subclass: #MyContactAddress
 	instanceVariableNames: 'addressForm'
 	classVariableNames: ''
-	category: 'MaAddress'
+	category: 'MAAddress'
 ]]]
 
 [[[
-MyContactAddress>>initialize
+MyContactAddress >> initialize
 	super initialize.
-	addressForm := Address example1 asComponent
+	addressForm := MAAddress example1 asComponent
 ]]]
 
 [[[
-MyContactAddress>>children
+MyContactAddress >> children
 	^ Array with: addressForm
 ]]]
 
-The method ==asComponent== sent to the address object automatically builds a Seaside component for us. The resulting editor is displayed in Figure *addressUI*.
+The method ==asComponent== sent to the address object automatically builds a Seaside component for us. The resulting editor is displayed in Figure *@addressUI*.
 
 +Address example1 asComponent.>file://figures/addressUI.png|width=90%|label=addressUI+
+
+
+!!! Decoration 
 
 To enable validation and add buttons to save and cancel the editing process is a matter of adding a decoration. The message ==addValidatedForm== decorates the component with the necessary rendering and behavior.
 
 [[[
-MyContactAddress>>initialize
+MyContactAddress >> initialize
 	super initialize.
-	addressForm := Address example1 asComponent.
+	addressForm := MAAddress example1 asComponent.
 	addressForm addValidatedForm
 ]]]
 
-As a result we get a complete address editor, as seen in Figure *addressSaveCancel*.
+As a result we get a complete address editor, as seen in Figure *@addressSaveCancel*.
 
 +Same Magritte generated component with buttons and validation.>file://figures/addressSaveCancel.png|width=90%|label=addressSaveCancel+
 
-In summary Magritte is really easy to use with Seaside. You put your descriptions on the class-side according to a naming-convention. You can then ask your model objects for their descriptions by sending the message ==description== or alternatively you directly ask Magritte to build a Seaside editor for you by sending the message ==asComponent==.
+
+!!! Conclusion
+
+In summary Magritte is  easy to use with Seaside. You put your descriptions according to a naming-convention. You can then ask your model objects for their descriptions by sending the message ==description== or alternatively you directly ask Magritte to build a Seaside editor for you by sending the message ==asComponent==.
+
+
+
+!! Magritte main entities
+
+In this chapter we present some of the key elements in the Magritte architecture. 
 
 
 !!! Descriptions
 
-Descriptions, as we have seen in the above examples, are naturally organized in a description hierarchy. A class diagram of the most important descriptions is shown in Figure *description*. Different kinds of descriptions exist: simple type-descriptions that directly map to Pharo classes, and some more advanced descriptions that are used to represent a collection of descriptions, or to model relationships between different entities.
+Descriptions, as we have seen in the above examples, are naturally organized in a description hierarchy. A class diagram of the most important descriptions is shown in Figure *@description*. Different kinds of descriptions exist: simple type-descriptions that directly map to Pharo classes, and some more advanced descriptions that are used to represent a collection of descriptions, or to model relationships between different entities.
 
 +Description hierarchy.>file://figures/descriptionHierarchy.png|width=80%|label=description.+
 
@@ -213,13 +271,16 @@ Descriptions are central to Magritte and are connected to accessors and conditio
 +Descriptions are a composite and connected via accessors.>file://figures/centralGlue|width=60%|label=centralGlue+
 
 #""Type Descriptions."" Most descriptions belong to this group, such as the ==ColorDescription==, the ==DateDescription==, the ==NumberDescription==, the ==StringDescription==, the ==BooleanDescription==, etc. All of them describe a specific Smalltalk class; in the examples given, this would be Color, Date, Number and all its subclasses, String, and Boolean and its two subclasses True and False. All descriptions know how to perform basic tasks on those types, such as to display, to parse, to serialize, to query, to edit, and to validate them.
+
 #""Container Descriptions."" If a model object is described, it is often necessary to keep a set of other descriptions within a collection, for example the description of a person consists of a description of the title, the family name, the birthday, etc. The ==ContainerDescription== class and its subclasses provide a collection container for other descriptions. In fact the container implements the whole collection interface, so that users can easily iterate (==do:==), filter (==select:==, ==reject:==), transform (==collect:==) and query (==detect:==, ==anySatisfy:==, ==allSatisfy:==) the containing descriptions.
+
 #""Option Descriptions."" The ==SingleOptionDescription== describes an entity, for which it is possible to choose up to one item from a list of objects. The ==MultipleOptionDescription== describes a collection, for which it is possible to choose any number of items from a predefined list of objects. The selected items are described by the referencing description.
+
 #""Relationship Descriptions."" Probably the most advanced descriptions are the ones that describe relationships between objects. The ==ToOneRelationshipDescription== models a one-to-one relationship; the ==ToManyRelationshipDescription== models a one-to-many relationship using a collection. In fact, these two descriptions can also be seen as basic type descriptions, since the ==ToOneRelationshipDescription== describes a generic object reference and the ==ToManyRelationshipDescription== describes a collection of object references. 
 
 !!! Exceptions
 
-Since actions on the meta-model can fail. In addition, objects might not match a given meta-model. Finally it is often important to present to the end users readable error messages. Magritte introduces an exception hierarchy which knows about the description, the failure and a human-readable error message as shown in Figure *exceptions*.
+Since actions on the meta-model can fail. In addition, objects might not match a given meta-model. Finally it is often important to present to the end users readable error messages. Magritte introduces an exception hierarchy which knows about the description, the failure and a human-readable error message as shown in Figure *@exceptions*.
 
 +Exceptions.>file://figures/magritte-exceptions.png|width=80%|label=exceptions+
 
@@ -238,7 +299,7 @@ It also allows the mementos to easily test data for validity outside the domain 
 ""Multiple Field Validation."" When we did the Mini-reservation example in previous chapters we wanted the starting date to be later than today. With Magritte we can express this point as follows: 
 
 [[[
-MAAddress>>descriptionStartDate
+MAAddress >> descriptionStartDate
 	<magritteDescription>
 
 	^ MADateDescription new 
@@ -250,7 +311,7 @@ MAAddress>>descriptionStartDate
 ]]]
 
 [[[
-MAAddress>>descriptionEndDate
+MAAddress >> descriptionEndDate
 	<magritteDescription>
 	
     ^ MADateDescription new 
@@ -266,7 +327,7 @@ Now to add a validation criterion that depends on several field values, you have
 We need to add a rule to the objects container description like this
 
 [[[
-MAAddress>>descriptionEndDate
+MAAddress >> descriptionEndDate
 	<magritteDescription>
     ^ super descriptionContainer
         addCondition: [ :object |
@@ -282,7 +343,7 @@ This simply intercepts the container after it is built, and adds a multi field v
 
 ""Accessors."" In Pharo, data can be accessed and stored in different ways. Most common data is stored within instance variables and read and written using accessor methods, but sometimes developers choose other strategies, for example to group data within a referenced object, to keep their data stored within a dictionary, or to calculate it dynamically from block closures. Magritte uses a strategy pattern to be able to access the data through a common interface, see Figure *@accessors*.
 
-+Accessors in Magritte.>file://figures/descriptionGlue.png|width=70%|label=accessor+
++Accessors in Magritte.>file://figures/descriptionGlue.png|width=70%|label=accessors+
 
 By far the most commonly used accessor type is the ==SelectorAccessor==. It can be instantiated with two selectors: a zero argument selector to read, and a one argument selector to write. For convenience  it is possible to specify a read selector only, from which the write selector is  inferred automatically. 
 
@@ -298,9 +359,9 @@ When a memento writes valid data to its model, it does so through accessors whic
 
 !!! Custom Views
 
-Components control how your objects display. Some  descriptions have an obvious one to one relationship with a UI component while others could easily be shown by several different components. *views* shows some components. For example, an ==MAMemoDescription== would be represented by a text area, but a ==MABooleanDescription== could be a checkbox, or a drop down with true and false, or a radio group with true and false. 
+Components control how your objects display. Some  descriptions have an obvious one to one relationship with a UI component while others could easily be shown by several different components. Figure *@views* shows some components. For example, an ==MAMemoDescription== would be represented by a text area, but a ==MABooleanDescription== could be a checkbox, or a drop down with true and false, or a radio group with true and false. 
  
-Each description defaults to a component, but allows you to override and specify any component you  choose, including any custom one you may write using the message ==Description>>componentClass:==. 
+Each description defaults to a component, but allows you to override and specify any component you  choose, including any custom one you may write using the message ==Description >> componentClass:==. 
 
 [[[
 aDescription componentClass: aClass
@@ -316,7 +377,7 @@ You can also define your own view by following the steps:
 
 
 
-!! Custom Descriptions
+!!! Custom Descriptions
 
 In some cases it might happen that there is no description provided to use with a  class. If your domain manipulates money (amount and currency) or URLs (scheme, domain, port, path, parameters) you may want to define your own descriptions (or load an extension package that already provides these descriptions) to take advantage of Magritte. 
 
@@ -329,8 +390,4 @@ Extending Magritte is simple, create your own description but remember that Magr
 We suggest you have a look at existing descriptions. In addition, carefully choosing the right superclass can already provide you part of what you are looking for. Parsing, printing and (de)serialization is implemented by the following visitors: ==MAStringReader==, ==MAStringWriter==, ==MABinaryReader== and ==MABinaryWriter==.
 
 
-!! Summary 
 
-While Magritte is really powerful, using a meta-data system will add another indirection layer to your application, so this is important to understand how to use such power and when to just use normal development techniques. A good and small example to learn from is the Conrad conference management system developed to manage the ESUG conference available at *http://www.squeaksource.com/Conrad.html*. 
-
-Here Magritte is used to describe the different forms and all the data. The Pier content management system is a more complex example of using Magritte, it can be downloaded at *http://www.piercms.com*.

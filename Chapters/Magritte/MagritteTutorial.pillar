@@ -4,7 +4,7 @@ This chapter presents some exercises about Magritte. They are based on the Magri
 
 The exercises start simple and with detailled instructions on how to perform the given tasks. Exercises marked with a star are a bit trickier, you might want to solve them later on. Sometimes you will probably not exactly know what class to use, what method to call or what parameters to pass, use the power of Pharo (senders, implementers, references, ...) to browse the source-code of Magritte, you might even discover some other features that were not presented during this tutorial.
 
-!! Getting Started 
+!!! Getting Started 
 
 Get an image and bring the Configuration Browser and install the stable version of MagritteContactManager.
 
@@ -23,38 +23,38 @@ Make sure your Seaside server is running within the image by browsing the counte
 
 If it is not, the seaside control panel from Tools menu of the world menu. 
 
-!! Juggle with Descriptions
+!!! Juggle with Descriptions
 
 Have a look at the source-code of the classes ==CMPerson==, ==CMAddress==, and ==CMPhone==. In essence a person is described by different attributes such as it first name, name email, birthday... In addition it in relation with an address object and it has a list of phones. 
 
 Here are the class definitions. Note that the class names are a bit overkill with the Model prefix. In future versions, we may drop it. 
 
-[[[language=smalltalk
+[[[
 Object subclass: #CMPerson
     instanceVariableNames: 'title firstName lastName homeAddress officeAddress picture birthday phones password'
     classVariableNames: ''
-        category: 'Magritte-ContactManager'
+    package: 'Magritte-ContactManager'
 ]]]
 
-[[[language=smalltalk
+[[[
 Object subclass: #CMPhone
     instanceVariableNames: 'kind number'
     classVariableNames: ''
-        category: 'Magritte-ContactManager'
+    package: 'Magritte-ContactManager'
 ]]]
 
-[[[language=smalltalk
+[[[
 Object subclass: #CMAddress
-        instanceVariableNames: 'street plz place canton nationality'
-        classVariableNames: ''
-            category: 'Magritte-ContactManager'
+    instanceVariableNames: 'street plz place canton nationality'
+    classVariableNames: ''
+    package: 'Magritte-ContactManager'
 ]]]
 
 All the following exercises will be built upon this simple model.
     
 Browse to *http://localhost:8080/personeditor* and check if you can see all the features presented during the lecture. 
 
-You should get an application as shown in Figure *editor*.
+You should get an application as shown in Figure *@editor*.
 
 +A person editor.>file://figures/personeditor.png|label=editor|width=60+
  
@@ -189,16 +189,17 @@ CMAddress >> descriptionCountry
 
 Note that here we create a new person because there is no reference from ==CMAddress== to ==CMPerson==.
 
+
 !!! Exercise 5: Food for Thought 
 
-Before stating to use seaside in combination with Magritte it is worth to step back and ask ourself some questions:
+Before starting to use Seaside in combination with Magritte it is worth to step back and ask ourself some questions:
 
 - Make a rough guess on how much code was saved by using Magritte compared to a manual approach in Seaside. 
 - From when on does it make sense to use a meta-model? 
 - What are the advantages / disadvantages?
 
 
-!! Seaside integration
+!! Seaside integration katas
 
 Up to now we have been working with descriptions only, we didn’t write any line of Seaside code. Moreover the model was not remembered somewhere and therefore was lost between different sessions. In this section we will concentrate on Seaside and build a simple user-interface that allows us to manage multiple persons. 
 To get an idea of how the result could look like, see Figure 1.
@@ -216,7 +217,7 @@ Test the setup of your new application in the Web browser.
 WAComponent subclass: #MAPersonManager
     instanceVariableNames: ''
     classVariableNames: 'Persons'
-        category: 'Magritte-ContactManager'
+    package: 'Magritte-ContactManager'
 ]]]
 
 [[[language=smalltalk
@@ -231,7 +232,7 @@ MAPersonManager class >> initialize
 
 [[[language=smalltalk
 MAPersonManager >> renderContentOn: html
-        html heading: 'Person Manager'. 
+    html heading: 'Person Manager'. 
 ]]]
 
 
@@ -572,7 +573,7 @@ Now when working with table it is mandatory that all the rows have the same desc
 MADescriptionEditor subclass: #MAPersonDescriptionEditor
 	instanceVariableNames: ''
 	classVariableNames: ''
-	category: 'Magritte-Tutorial'
+	package: 'Magritte-Tutorial'
 ]]]
 
 [[[language=smalltalk
