@@ -20,7 +20,7 @@ deploy:
   key:
     secure:  IxgmjN1XNfWmK3GQDUYVJ6SxdoxCaAyhMQztfbQMCSDAuWzbrzuAY6WxKQ8Va5bCVqjGz1OpxKiEAN21Ye2lt56C97zBAeWeNr/Y3QXDWfYTuD0kP68kgtNzNGU8O102keTc00pz0s+YG8j3Ta2/A9Lbou/5WXYamOAsl1ogWd/FiB9IlqO5Ab6IoW7GPy/8cdWc/U4TlIIXuV0z/lX5as5KY6Ot51jWne+zlsf1kMZ4Obm2uI1bSZblbvRfkOdjYPTOjzhqPUEPBHmrxQqJOb104YrT3Gdaz6WwfeThlDlkK3JtxaC9N+jK7AnruZGios9JjxgZiIdFxwICo7D8ZdEEUvaLmzWOTBR1EqvwVEQrVG3pH6XaSeR2+gi7NZ5fYW9Vkpx+kNGeFRxvlAn/RNCz/O1Gf+K1L8dv2+2y36MBhgY7okoSZQOj9GB6Pax16shrxy/nLKuFJyf847kOo7VWQN8kUYjjQR/15KCUxrVMzp1OeW+jWn6k8fDe3jR4Pw+3kSo/KroSJwRPen04bl0QW4u113lytxlcTKRQL+MB5Br2DEuZefQgHe4FYWE6UIjHmJf2zV/V+m5CiIWW9Y4KVniPuh3FZEX2r5CuunmgwWR8XB8fQs5FdOaRKS1bZqJ86LGrqiBlt1590xdbnFfkX3mW1AS3ebyZH+koQDg=
 - provider: releases
-  file: build/smacc.spiral.pdf
+  file: build/magritte.pdf
   on:
     tags: true
   skip_cleanup: true
