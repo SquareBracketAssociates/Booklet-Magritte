@@ -10,7 +10,7 @@ In this chapter we describe Magritte, its design and how to customize it. Now be
 
 In this section we present the key principles. With such a knowledge you can get 80\% of the power of Magritte without knowing all its possible customizations. The key idea behind Magritte is the following: given one object with a set of values, and a description of this information, we will create automatically tools that treat such information and for example automatically create Seaside components. 
 
-Figure *@basicPrinciple* shows that a person address', John's address, instance of the class Address, is described by a description object which is attached to the class ==Address==. A program (i.e., database query, generic UI, seaside component builder) will interpret the value of the instance by using its descriptions.
+Figure *@basicPrinciple* shows that a person address', John's address, instance of the class MAAddress, is described by a description object which is attached to the class ==MAAddress==. A program (i.e., database query, generic UI, seaside component builder) will interpret the value of the instance by using its descriptions.
 
 +An object is described by a description which is defined on its class.>file://figures/basicPrinciple.png|width=60%|label=basicPrinciple+
 
@@ -104,7 +104,7 @@ If it is not, use the Seaside control panel from Tools menu of the world menu to
 We define a class ==MAAddress== with four instance variables and their corresponding accessors. 
 
 [[[
-Object subclass: #Address
+Object subclass: #MAAddress
 	instanceVariableNames: 'street place plz canton'
 	classVariableNames: ''
 	category: 'MAAddress'
@@ -180,7 +180,7 @@ Now we can start manipulating the descriptions. Inspect the description object o
 
 [[[
 | address |
-address := Address example1.
+address := MAAddress example1.
 address magritteDescription inspect.
 ]]]
 
@@ -188,7 +188,7 @@ We can iterate over the descriptions and get the values associated with the desc
 
 [[[
 | address |
-address := Address example1.
+address := MAAddress example1.
 address magritteDescription do: [ :description |
 	Transcript
 		show: description label; show: ':'; tab;
@@ -230,7 +230,7 @@ MyContactAddress >> children
 
 The method ==asComponent== sent to the address object automatically builds a Seaside component for us. The resulting editor is displayed in Figure *@addressUI*.
 
-+Address example1 asComponent.>file://figures/addressUI.png|width=90%|label=addressUI+
++MAAddress example1 asComponent.>file://figures/addressUI.png|width=90%|label=addressUI+
 
 
 !!! Decoration 
