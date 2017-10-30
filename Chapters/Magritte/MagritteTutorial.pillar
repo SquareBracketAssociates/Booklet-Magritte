@@ -1,6 +1,6 @@
 !! Magritte Katas
 
-This chapter presents some exercises about Magritte. They are based on the Magritte Tutorial written by Lukas Renggli (the original designer and implementor of Magritte). We thank him for Magritte and this set of exercises. The exercises has been ported to Magritte 30 and Seaside 3.1. Magritte30 supports instance-based declarations while Magritte20 was only supporting class-based declarations. The exercises have been enhanced and are maintained by Stéphane Ducasse and Damien Cassou. 
+This chapter presents some exercises about Magritte. They are based on the Magritte Tutorial written by Lukas Renggli. We thank him for Magritte and this set of exercises. The exercises has been ported to Magritte 30 and Seaside 3.1. Magritte30 supports instance-based declarations while Magritte20 was only supporting class-based declarations. The exercises have been enhanced and are maintained by Stéphane Ducasse and Damien Cassou. 
 
 The exercises start simple and with detailled instructions on how to perform the given tasks. Exercises marked with a star are a bit trickier, you might want to solve them later on. Sometimes you will probably not exactly know what class to use, what method to call or what parameters to pass, use the power of Pharo (senders, implementers, references, ...) to browse the source-code of Magritte, you might even discover some other features that were not presented during this tutorial.
 
