@@ -8,18 +8,20 @@ In this chapter we describe Magritte, its design and how to customize it. Now be
 
 !!! Basic principles
 
-In this section we present the key principles. With such a knowledge you can get 80\% of the power of Magritte without knowing all its possible customizations. The key idea behind Magritte is the following: given one object with a set of values, and a description of this information, we will create automatically tools that treat such information and for example automatically create Seaside components. 
+In this section we present the key principles. With such a knowledge you can get 80\% of the power of Magritte without knowing all its possible customizations. The key idea behind Magritte is the following: given one object with a set of values, and a description of this information, Magriite offers tools that treat such information and produce advanced outputs. For example, Magritte creates Seaside components.
 
-Figure *@basicPrinciple* shows that a person address', John's address, instance of the class MAAddress, is described by a description object which is attached to the class ==MAAddress==. A program (i.e., database query, generic UI, seaside component builder) will interpret the value of the instance by using its descriptions.
+Figure *@basicPrinciple* shows that a person address', John's address, instance of the class ==MAAddress==, is described by a description object which is attached to the class ==MAAddress==. A program (i.e., database query, generic UI, seaside component builder) will interpret the value of the instance by using its descriptions.
 
-+An object is described by a description which is defined on its class.>file://figures/basicPrinciple.png|width=60%|label=basicPrinciple+
++An address is instance of its class and described by a description.>file://figures/basicPrinciple.png|width=60%|label=basicPrinciple+
 
-Here are the basic description assumptions:
+
+
+!!!! Basic steps: 
 
 - An object is described by adding methods named ==description== (naming convention) to its class. Such description methods create different description entities. The following ==MAAddress== class method creates a string description object that has a label =='Street'==, a priority and two accessors ==street== and ==street:== to access it.
 
 [[[
-MAAddress >> descriptionStreet
+MAAddress class >> descriptionStreet
 	<magritteDescription>
 	^ MAStringDescription new
 		accessor: #street;
@@ -28,21 +30,30 @@ MAAddress >> descriptionStreet
 		yourself
 ]]]
 
-Note that there is no need to have a one to one mapping between the instance variables of the class and the associated descriptions.
+
+
 
 - All descriptions are automatically collected and put into a container description when sending ==magritteDescription== to  the object (see Figure *@describingAddress*).
+
 - Descriptions are defined programmatically and can also be queried. They support the collection protocol (==do:==,  ==select:==...).
+
+!!!! Two remarks
+
+Looking at the previous example two remarks should be made: 
+
+# The description method, e.g. ==descriptionStreet==, can be either a class or an instance method depending of the degree of flexibility wanted.
+# There is no need to have a one to one mapping between the instance variables of the class and the associated descriptions.
 
 +Describing an Address.>file://figures/describingAddress.png|width=90%|label=describingAddress+
 
-Now once we have described an instance, Magritte can build for us different representations. An interesting one in the context of web development is the automatic creation of Seaside components. 
+Now once we have described an instance, Magritte can build for us different outputs. An interesting one in the context of web development is the automatic creation of Seaside components. 
 
 
 !!! Obtaining a component
 
 Once an object is described, you can obtain a Seaside component by sending to the object the message ==Object >> asComponent==. For example to get a component for an address: ==anAddress asComponent== as shown in Figure *@figaddressOur*.
 
-+anAddress asComponent produces a Seaside component.>file://figures/address.png|width=60%|label=figaddressOur+ 
++ ==anAddress asComponent== produces a Seaside component.>file://figures/addressUI.png|width=60%|label=figaddressOur+ 
 
 It is often useful to decorate the component with buttons like cancel and Ok. This can be done by sending the message ==WAComponent >> addValidatedForm== to the component. Note that you can also change the label of the validating form using ==addValidatedForm:== and passing an array of associations whose first element is the message to be sent and the second the label to be displayed.
 
@@ -56,7 +67,7 @@ anAddress asComponent addValidatedForm.
 anAddress asComponent addValidatedForm: { #save -> 'Save'. #cancel -> 'Cancel' }.
 ]]]
 
-A Magritte form is generally wrapped with a form decoration via  ==WAComponent >> addValidatedForm.==. Magritte forms don't directly work on your domain objects. They work on a memento of the values pulled from your object using the descriptions. When you call ==save==, the values are validated using the descriptions, and only after passing all validation rules are the values committed to your domain object by the mementos via the accessors.
+A Magritte form is generally wrapped with a form decoration via  ==WAComponent >> addValidatedForm==. Magritte forms don't directly work on your domain objects. They work on a memento of the values pulled from your object using the descriptions. When you call ==save==, the values are validated using the descriptions, and only after passing all validation rules are the values committed to your domain object by the mementos via the accessors.
 
 A description container is an object implementing collection behavior (==collect:==, ==select:==, ==do:==, ==allSatisfy:==, ...). Therefore you can send the normal collection messages to extract the parts of the descriptions you want. You can also iterate over the description or concatenate new ones. Have a look at the ==MAContainer== protocol.
 
