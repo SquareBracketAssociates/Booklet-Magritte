@@ -1,5 +1,4 @@
-
-This booklet describes Magritte: a meta-data driven framework. This means that you describe your objects and based on such descriptions you can get for free different interpreters performing tedious tasks. One task is the generation of forms and report in Seaside.
+This booklet describes Magritte and one tutorial to illustrate it. Magritte is a meta-data driven framework. This means that you describe your objects and based on such descriptions you can get for free different interpreters performing tedious tasks. One task is the generation of forms and report in Seaside.
 
 
 Magritte was designed and developed by Lukas Renggli during his master under the supervision
