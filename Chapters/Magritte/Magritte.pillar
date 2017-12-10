@@ -16,9 +16,9 @@ Figure *@basicPrinciple* shows that a person address', John's address, instance 
 
 
 
-!!!! Basic steps: 
+!!!! Describing an object 
 
-- An object is described by adding methods named ==description== (naming convention) to its class. Such description methods create different description entities. The following ==MAAddress== class method creates a string description object that has a label =='Street'==, a priority and two accessors ==street== and ==street:== to access it.
+An object is described by adding methods named ==description== (naming convention) to its class. Such description methods create different description entities. The following ==MAAddress== class method creates a string description object that has a label =='Street'==, a priority and two accessors ==street== and ==street:== to access it.
 
 [[[
 MAAddress class >> descriptionStreet
@@ -31,8 +31,7 @@ MAAddress class >> descriptionStreet
 ]]]
 
 
-
-
+Once you define descriptions to your object you get the following:
 - All descriptions are automatically collected and put into a container description when sending ==magritteDescription== to  the object (see Figure *@describingAddress*).
 
 - Descriptions are defined programmatically and can also be queried. They support the collection protocol (==do:==,  ==select:==...).
@@ -49,15 +48,15 @@ Looking at the previous example two remarks should be made:
 Now once we have described an instance, Magritte can build for us different outputs. An interesting one in the context of web development is the automatic creation of Seaside components. 
 
 
-!!! Obtaining a component
+!!! Obtaining a Seaside component
 
-Once an object is described, you can obtain a Seaside component by sending to the object the message ==Object >> asComponent==. For example to get a component for an address: ==anAddress asComponent== as shown in Figure *@figaddressOur*.
+When the Magritte extensions to Seaside are loaded, you can obtain a Seaside component for a described object using the message ==Object >> asComponent==. For example ==anAddress asComponent== produce a component for an address  as shown in Figure *@figaddressOur*.
 
 + ==anAddress asComponent== produces a Seaside component.>file://figures/addressUI.png|width=60%|label=figaddressOur+ 
 
-It is often useful to decorate the component with buttons like cancel and Ok. This can be done by sending the message ==WAComponent >> addValidatedForm== to the component. Note that you can also change the label of the validating form using ==addValidatedForm:== and passing an array of associations whose first element is the message to be sent and the second the label to be displayed.
+!!!! Component decoration
 
-
+It is often useful to decorate a component with buttons like cancel and Ok. This can be done by sending the message ==WAComponent >> addValidatedForm== to the component. Note that you can also change the label of the validating form using ==addValidatedForm:== and passing an array of associations whose first element is the message to be sent and the second the label to be displayed.
 
 [[[
 anAddress asComponent addValidatedForm.
@@ -67,8 +66,11 @@ anAddress asComponent addValidatedForm.
 anAddress asComponent addValidatedForm: { #save -> 'Save'. #cancel -> 'Cancel' }.
 ]]]
 
-A Magritte form is generally wrapped with a form decoration via  ==WAComponent >> addValidatedForm==. Magritte forms don't directly work on your domain objects. They work on a memento of the values pulled from your object using the descriptions. When you call ==save==, the values are validated using the descriptions, and only after passing all validation rules are the values committed to your domain object by the mementos via the accessors.
+!!!! Memento
 
+A Magritte form is generally wrapped with a form decoration via  ==WAComponent >> addValidatedForm==. Magritte forms don't directly work on your domain objects. They work on a memento of the values pulled from your object using the object descriptions. When you call ==save==, the values are validated using the descriptions, and only after passing all validation rules are the values committed to your domain object by the mementos via the accessors.
+
+!!!! Container
 A description container is an object implementing collection behavior (==collect:==, ==select:==, ==do:==, ==allSatisfy:==, ...). Therefore you can send the normal collection messages to extract the parts of the descriptions you want. You can also iterate over the description or concatenate new ones. Have a look at the ==MAContainer== protocol.
 
 You can also use the message ==MAContainer >> asComponentOn:== with aModel to build or select part of a description and get a component on a given model. The following code schematically shows the idea: two descriptions are assembled and a component based on these two descriptions is built.
@@ -86,7 +88,7 @@ Here Magritte is used to describe the different forms and all the data. The Pier
 
 
 
-!! First concrete example
+!! A first concrete example
 
 Let us go over a simple but complete example. We want to develop an application to manage person, address and phone number as shown in Figure *@addressOur*.
 
@@ -95,7 +97,23 @@ Let us go over a simple but complete example. We want to develop an application 
 
 !!! Getting started 
 
-Get a Seaside image from *http://www.seaside.st*. Normally Seaside is shipped with Magritte. 
+Get a Seaside image from *http://www.seaside.st*. 
+Make sure your Seaside server is running within the image by browsing the counter application at *http://localhost:8080/examples/counter*
+
+If it is not, use the Seaside control panel from Tools menu of the world menu to check the status of the web server. 
+
+Normally Seaside is shipped with Magritte. 
+
+[[[
+Metacello new
+	smalltalkhubUser: 'Magritte' project: 'Magritte3';
+	configuration: 'Magritte3';
+	version: #development;
+	load.
+]]]
+
+You can also load the project Magritte3 from the Magritte repository by adding this project to the Monticello 
+repositories.
 
 [[[
 MCSmalltalkhubRepository
@@ -105,12 +123,8 @@ MCSmalltalkhubRepository
 	password: ''
 ]]]
 
-Make sure your Seaside server is running within the image by browsing the counter application at *http://localhost:8080/examples/counter*
 
-If it is not, use the Seaside control panel from Tools menu of the world menu to check the status of the web server. 
-
-
-!!! Defining the address class
+!!! Defining the Address class
 
 We define a class ==MAAddress== with four instance variables and their corresponding accessors. 
 
@@ -137,51 +151,51 @@ Then we add the descriptions to the ==MAAddress== class as follows: the street n
 
 [[[
 MAAddress >> descriptionStreet
-		<magritteDescription>
-		
-		^ MAStringDescription new
-			accessor: #street;
-			label: 'Street';
-			priority: 10;
-			yourself
+	<magritteDescription>
+
+	^ MAStringDescription new
+		accessor: #street;
+		label: 'Street';
+		priority: 10;
+		yourself
 ]]]
 
 [[[
 MAAddress >> descriptionPlz
-		<magritteDescription>
-		
-		^ MANumberDescription new
-			accessor: #plz;
-			label: 'PLZ';
-			priority: 20;
-			min: 1000;
-			max: 9999;
-			yourself
+	<magritteDescription>
+
+	^ MANumberDescription new
+		accessor: #plz;
+		label: 'PLZ';
+		priority: 20;
+		min: 1000;
+		max: 9999;
+		yourself
 ]]]
 
 [[[
 MAAddress >> descriptionPlace
-		<magritteDescription>
-	
-		^ MAStringDescription new
-				accessor: #place;
-				label: 'Place';
-				priority: 30;
-				yourself
+	<magritteDescription>
+
+	^ MAStringDescription new
+		accessor: #place;
+		label: 'Place';
+		priority: 30;
+		yourself
 ]]]
 
 [[[
 MAAddress >> descriptionCanton
-		<magritteDescription>
-	
-		^ MASingleOptionDescription new
-			options: #( 'Zurich' 'Bern' 'Luzern' 'Uri' 'Schwyz' 'Unterwalden' 'Glarus' 'Zug' 'Freiburg' 'Solothurn' 'Basel' 'Schaffhausen' 'Appenzell' 'St. Gallen' 'Graubunden' 'Aargau' 'Thurgau' 'Ticino' 'Vaud' 'Valais' 'Neuchatel' 'Geneve' 'Jura' );
-			reference: MAStringDescription new;
-			accessor: #canton;
-			label: 'Canton';
-			priority: 40;
-			beSorted;
-			yourself
+	<magritteDescription>
+
+	^ MASingleOptionDescription new
+		options: #( 'Zurich' 'Bern' 'Luzern' 'Uri' 'Schwyz' 'Unterwalden' 'Glarus' 'Zug' 'Freiburg' 'Solothurn' 'Basel' 'Schaffhausen' 'Appenzell' 'St. Gallen' 'Graubunden' 'Aargau' 'Thurgau' 'Ticino' 'Vaud' 'Valais' 'Neuchatel' 'Geneve' 'Jura' );
+		reference: MAStringDescription new;
+		accessor: #canton;
+		label: 'Canton';
+		priority: 40;
+		beSorted;
+		yourself
 ]]]
 
 
@@ -195,20 +209,23 @@ address := MAAddress example1.
 address magritteDescription inspect.
 ]]]
 
+@@todo add a screenshot of the inspector.
+
 We can iterate over the descriptions and get the values associated with the descriptions of our address model:
 
 [[[
 | address |
 address := MAAddress example1.
-address magritteDescription do: [ :description |
-	Transcript
-		show: description label; show: ':'; tab;
-		show: (description toString: (address readUsing: description));
-		cr ]
+address magritteDescription 
+	do: [ :description |
+		Transcript
+			show: description label; show: ':'; tab;
+			show: (description toString: (address readUsing: description));
+			cr ]
 ]]]
 
 
-Executing the second code snippet outputs the following in the Transcript:
+Executing the code snippet outputs the following in the Transcript:
 
 [[[
 Street:    Sesame
@@ -217,7 +234,7 @@ Place:     DreamTown
 Canton:    Bern
 ]]]
 
-!!! Creating a Seaside editor.
+!!! Creating a Seaside editor
 
  Now we are ready to create a Seaside component automatically in a similar manner. 
 
@@ -246,7 +263,7 @@ The method ==asComponent== sent to the address object automatically builds a Sea
 
 !!! Decoration 
 
-To enable validation and add buttons to save and cancel the editing process is a matter of adding a decoration. The message ==addValidatedForm== decorates the component with the necessary rendering and behavior.
+To enable validation, we add buttons to save and cancel the editing process. For this we add a decoration. The message ==addValidatedForm== decorates the component with the necessary rendering and behavior.
 
 [[[
 MyContactAddress >> initialize
@@ -269,7 +286,6 @@ In summary Magritte is  easy to use with Seaside. You put your descriptions acco
 !! Magritte main entities
 
 In this chapter we present some of the key elements in the Magritte architecture. 
-
 
 !!! Descriptions
 
