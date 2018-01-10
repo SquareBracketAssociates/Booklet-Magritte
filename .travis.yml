@@ -8,7 +8,7 @@ before_install:
 script: |
   docker run --tty --rm --volume $PWD:/work dpollet/texlive:pillar bash -c "\
     wget --quiet --output-document=- 'https://raw.githubusercontent.com/pillar-markup/pillar/master/download.sh' | bash \
-    && make book "
+    && make spiralbook "
 
 deploy:
 - provider: bintray
@@ -18,9 +18,9 @@ deploy:
   skip_cleanup: true
   user: ducasse
   key:
-    secure:  IxgmjN1XNfWmK3GQDUYVJ6SxdoxCaAyhMQztfbQMCSDAuWzbrzuAY6WxKQ8Va5bCVqjGz1OpxKiEAN21Ye2lt56C97zBAeWeNr/Y3QXDWfYTuD0kP68kgtNzNGU8O102keTc00pz0s+YG8j3Ta2/A9Lbou/5WXYamOAsl1ogWd/FiB9IlqO5Ab6IoW7GPy/8cdWc/U4TlIIXuV0z/lX5as5KY6Ot51jWne+zlsf1kMZ4Obm2uI1bSZblbvRfkOdjYPTOjzhqPUEPBHmrxQqJOb104YrT3Gdaz6WwfeThlDlkK3JtxaC9N+jK7AnruZGios9JjxgZiIdFxwICo7D8ZdEEUvaLmzWOTBR1EqvwVEQrVG3pH6XaSeR2+gi7NZ5fYW9Vkpx+kNGeFRxvlAn/RNCz/O1Gf+K1L8dv2+2y36MBhgY7okoSZQOj9GB6Pax16shrxy/nLKuFJyf847kOo7VWQN8kUYjjQR/15KCUxrVMzp1OeW+jWn6k8fDe3jR4Pw+3kSo/KroSJwRPen04bl0QW4u113lytxlcTKRQL+MB5Br2DEuZefQgHe4FYWE6UIjHmJf2zV/V+m5CiIWW9Y4KVniPuh3FZEX2r5CuunmgwWR8XB8fQs5FdOaRKS1bZqJ86LGrqiBlt1590xdbnFfkX3mW1AS3ebyZH+koQDg=
+    secure: QbEDArB98C3Y38E76vb5xTzaH+EPVRSU9flNmIiOWNIL0OmFkGH+nm5WUN3wj2bo6jZWGYQlh2/z85/vPYNfqiQgoPaDJiaw/G9thb1u9EN3L1fc3PN7/fJzUs7GnTh/7hB4Z/MxWHkCfIlG9/wJRxZI7phUq1HJTrAUq4pahYTfu6krUOw0fatXjMywULpAIOJszrcPtgxA2JnCuFnNQaZQgLPNA6upd/vbAMa0KSqOQRzq5QmJWoP8hnHIRH4ZpkOxmvIVX/5WMwtsvLwqfma06NOkP3rlSi4YByHI2Y7Eb2y+sD3Enk6W/l2wRJvP8fwEbDK+7MAgvJpybmdD6eMhajrcSLFJFzge74OoWvJEgfgDgVCQg8uT5nNx1k3GzBLvTCQRyiRW3cd0pYW4IUUHoWwdxgzhI98eNtcQZQpAbEuF7WjZsL2tHnu6XiACNVeOYeu3YKygreHBiGmZ4QSAqwrq0r8JtREGPyItEyAZNxDK0PVwteTCxENY/YuEWQc+SkmduEN568u1uIIHJMklJql67oKoFeVbBquiGLpripctHsY3kyBXJap+z13Z7ESNqsJVJ+8ms6z73TKHM+ELl1DwsxLTkBL73XIdWXbetBApNuySobQ4DfH0LoXH5WBDCnGQtx1A2pufDp+HswPbu0qILI0R57Zhh45oRFo=
 - provider: releases
-  file: build/magritte.pdf
+  file: build/book.pdf
   on:
     tags: true
   skip_cleanup: true

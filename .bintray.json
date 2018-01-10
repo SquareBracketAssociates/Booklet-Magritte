@@ -3,7 +3,7 @@
         "name": "booklet-magritte",
         "repo": "wip",
         "subject": "squarebracketassociates",
-        "desc": "Smacc",
+        "desc": "Magritte",
         "licenses": ["MIT"],
         "website_url": "https://github.com/SquareBracketAssociates/Booklet-Magritte",
         "issue_tracker_url": "https://github.com/SquareBracketAssociates/Booklet-Magritte/issues",
@@ -18,8 +18,8 @@
 
     "files": [
         {
-            "includePattern": "build/(magritte).pdf",
-            "uploadPattern": "$1-wip.pdf",
+            "includePattern": "build/book.spiral.pdf",
+            "uploadPattern": "magritte-wip.pdf",
             "matrixParams": { "override": 1 }
         }
     ],
