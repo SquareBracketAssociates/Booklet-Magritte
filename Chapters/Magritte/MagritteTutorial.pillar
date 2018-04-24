@@ -518,7 +518,7 @@ MAPersonManager >> renderContentOn: html
 As experience shows, customers are often not completely satisfied with the features the application developers are giving to them. They want more and they want to be able to customize everything by themselves. Thanks to the reflective nature of Magritte - all the descriptions within Magritte are described with Magritte descriptions itself - we can easily provide the necessary functionality to offer flexibility to end-users. 
 
 !!!Question 16
- Point your browser to http://localhost:8080/seaside/magritte/editor. You should get a browse navigating the different descriptions themselves. What you see is that a description is an object having multiple fields. 
+ Point your browser to http://localhost:8080/magritte/editor. You should get a browse navigating the different descriptions themselves. What you see is that a description is an object having multiple fields. 
 In addition since a description is also described using magritte we can get easily a editor to edit descriptions. 
 Browse the class ==MADescriptionEditor==: it is the one implementing the description example editor itself. 
 
