@@ -279,7 +279,7 @@ As a result we get a complete address editor, as seen in Figure *@addressSaveCan
 
 !!! Conclusion
 
-In summary Magritte is  easy to use with Seaside. You put your descriptions according to a naming-convention. You can then ask your model objects for their descriptions by sending the message ==description== or alternatively you directly ask Magritte to build a Seaside editor for you by sending the message ==asComponent==.
+In summary Magritte is  easy to use with Seaside. You put your descriptions according to a naming-convention. You can then ask your model objects for their descriptions by sending the message ==magritteDescription== or alternatively you directly ask Magritte to build a Seaside editor for you by sending the message ==asComponent==.
 
 
 
