@@ -395,7 +395,7 @@ We initialize the report following the
 [[[language=smalltalk
 MAPersonManager >> initialize
     super initialize.
-    self report: (MAReport rows: self persons description: self persons first magritteDescription)
+    self report: (MAReport rows: self persons description: CMPerson new magritteDescription)
 ]]]
 
 Now we define the method ==children== to make sure that the report component is correctly returned. 
@@ -440,13 +440,13 @@ Right now almost all the information about a person is displayed within the repo
 MAPersonManager >> filteredDescriptionsFrom: aPerson
 
     ^ aPerson magritteDescription select: [ :each | 
-         #(firstName lastName email) includes: each accessor selector ] 
+         #(firstName lastName) includes: each accessor selector ] 
 ]]]
      
 [[[language=smalltalk
 MAPersonManager >> initialize
     super initialize.
-    self report: (MAReport rows: self persons description: (self  filteredDescriptionsFrom: self persons first))
+    self report: (MAReport rows: self persons description: (self  filteredDescriptionsFrom: CMPerson new))
 ]]]
 
 
@@ -511,9 +511,6 @@ MAPersonManager >> renderContentOn: html
 		separatedBy: [ html space ]. 
 	html render: self report
 ]]]
-
-SD: check because when pressing on editView I got a "requiresMultipartForm" is nil
-
 
 
 !! Giving access to end-users
