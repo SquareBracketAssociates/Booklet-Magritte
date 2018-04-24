@@ -2,11 +2,11 @@
 
 This chapter presents some exercises about Magritte. They are based on the Magritte Tutorial written by Lukas Renggli. We thank him for Magritte and this set of exercises. The exercises has been ported to Magritte 30 and Seaside 3.1. Magritte30 supports instance-based declarations while Magritte20 was only supporting class-based declarations. The exercises have been enhanced and are maintained by Stéphane Ducasse and Damien Cassou. 
 
-The exercises start simple and with detailled instructions on how to perform the given tasks. Exercises marked with a star are a bit trickier, you might want to solve them later on. Sometimes you will probably not exactly know what class to use, what method to call or what parameters to pass, use the power of Pharo (senders, implementers, references, ...) to browse the source-code of Magritte, you might even discover some other features that were not presented during this tutorial.
+The exercises start simple and with detailed instructions on how to perform the given tasks. Exercises marked with a star are a bit trickier, you might want to solve them later on. Sometimes you will probably not exactly know what class to use, what method to call or what parameters to pass, use the power of Pharo (senders, implementers, references, ...) to browse the source-code of Magritte, you might even discover some other features that were not presented during this tutorial.
 
 !!! Getting Started 
 
-Get an image and bring the Configuration Browser and install the stable version of MagritteContactManager.
+Get an image and bring the Catalog Browser and install the stable version of MagritteContactManager.
 
 In case you need to know where the code of the tutorial is saved. It is in the following repository:
 
@@ -25,7 +25,7 @@ If it is not, the seaside control panel from Tools menu of the world menu.
 
 !!! Juggle with Descriptions
 
-Have a look at the source-code of the classes ==CMPerson==, ==CMAddress==, and ==CMPhone==. In essence a person is described by different attributes such as it first name, name email, birthday... In addition it in relation with an address object and it has a list of phones. 
+Have a look at the source-code of the classes ==CMPerson==, ==CMAddress==, and ==CMPhone==. In essence a person is described by different attributes such as it first name, name email, birthday... In addition it is in relation with an address object and it has a list of phones. 
 
 Here are the class definitions. Note that the class names are a bit overkill with the Model prefix. In future versions, we may drop it. 
 
@@ -261,7 +261,7 @@ Let's see how one add a link to a page:
 MAPersonManager >> renderContentOn: html 
     html heading: 'Person Manager'.
     html anchor
-        callback: [ self add ]; with: [ html text: 'add'']
+        callback: [ self add ]; with: [ html text: 'add']
 ]]]
 
 !!! Exercise 8: Rendering the contacts
@@ -289,7 +289,7 @@ MAPersonManager >> renderContentOn: html
     html heading: 'Person Manager'. 
     html anchor
         callback: [ self add ];
-        with: [ html text: 'add'' ]. 
+        with: [ html text: 'add' ]. 
     html break.
     self persons
         do: [ :person | self renderLineForPerson: person on: html ] separatedBy: [ html break ]
