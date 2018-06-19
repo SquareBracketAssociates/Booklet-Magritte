@@ -8,7 +8,7 @@ are generated using Magritte.
 
 We present briefly the latest version of Magritte and we propose a serie of exercises.
 
-${inputFile:Chapters/Magritte/Magritte.pillar}$
+${inputFile:value=Chapters/Magritte/Magritte.pillar}$
 
-${inputFile:Chapters/Magritte/MagritteTutorial.pillar}$
+${inputFile:value=Chapters/Magritte/MagritteTutorial.pillar}$
 
