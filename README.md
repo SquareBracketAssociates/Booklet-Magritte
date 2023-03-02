@@ -1,16 +1,7 @@
 # A booklet on the Magritte the Meta Data-Driven Framework
 
-[![Build status][badge]][travis]
-
-[travis]: https://travis-ci.org/SquareBracketAssociates/Booklet-Magritte
-[badge]: https://travis-ci.org/SquareBracketAssociates/Booklet-Magritte.svg?branch=master
-
-The result from the latest successful Travis build can be found [on Bintray (PDF)](https://bintray.com/squarebracketassociates/wip/download_file?file_path=magritte-wip.pdf).
-
-## To contribute
-
-- Fork
-- Do pull Request 
+[![Download PDF](https://img.shields.io/badge/Download-PDF-9cf.svg)](https://github.com/SquareBracketAssociates/Booklet-Maggrite/releases/download/latest/magritte-wip.pdf)
+[![Centralized book generation](https://github.com/SquareBracketAssociates/Booklet-Maggrite/actions/workflows/main.yml/badge.svg)](https://github.com/SquareBracketAssociates/Booklet-Maggrite/actions/workflows/main.yml)
 
 ## To latex it locally
 
